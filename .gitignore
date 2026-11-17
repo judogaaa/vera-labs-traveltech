@@ -1,0 +1,112 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+o-hochu-app/
+
+# Secrets / local env (keep .env.example committed)
+.env
+.env.local
+.env.*.local
+
+# ML / indexer local data (never commit Hotels-50K images/weights)
+.venv-ml/
+services/**/data/
+services/**/cache/
+services/**/checkpoints/
+services/**/models/
+services/**/*.pyc
+services/**/__pycache__/
+*.tar.gz
+*.bin
+*.safetensors
+bad_files.txt
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Curated catalog derived/local caches (keep manifests + slim)
+data/curated_hotels/catalog_db.json
+data/curated_hotels/cache/h50k_images_selected.json
+data/curated_hotels/cache/h50k_images.json
+
+# Trip planner persisted itineraries + local smoke reports
+data/trips/
+scripts/_write_gigachat_env.py
+scripts/_diag_gigachat_tls.py
+
+# Local E2E artifacts (keep gitkeep; don't commit large PNGs/logs)
+artifacts/e2e/*.log
+artifacts/e2e/*.err
+artifacts/e2e/screenshots/*.png
+artifacts/e2e/test-results/
+artifacts/e2e/playwright-report/
+artifacts/e2e/api.*
+artifacts/e2e/vite.*
+artifacts/e2e/backend.*
+artifacts/e2e/frontend.*
+artifacts/e2e/parent_audit_req.txt
+
+# Keep public CA PEMs; ignore any accidental private keys
+certs/*.key
+
+
+# Release hygiene (new files; previously tracked files must also be removed)
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.p12
+*.pfx
+*.ovpn
+*.dump
+*.bak
+data/ostrovok_demo/cache/
+
+.venv*/
+__pycache__/
+.pytest_cache/
+*.tsbuildinfo
+data/map_tile_cache/
+
+# Local development and generated output
+.venv*/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+*.pyc
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.key
+*.p12
+*.pfx
+.e2e-credentials.json
+.e2e-fixtures.json
+playwright-report/
+test-results/

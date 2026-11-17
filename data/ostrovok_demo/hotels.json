@@ -1,0 +1,530 @@
+{
+  "region": "istanbul",
+  "generated_at": "2026-10-23T14:22:58.021406+00:00",
+  "count": 25,
+  "note": "Identity/coords from curated catalog. Attribute observations are separate; geo methods produce estimated status, never invented verified.",
+  "hotels": [
+    {
+      "hotel_id": "oh-curated-000002",
+      "id": "oh-curated-000002",
+      "name": "Hyatt Centric Levent Istanbul",
+      "canonical_name": "Hyatt Centric Levent Istanbul",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.075416666,
+      "lon": 29.015416666,
+      "latitude": 41.075416666,
+      "longitude": 29.015416666,
+      "zone_key": "istanbul",
+      "official_website": "https://www.hyatt.com/hyatt-centric/en-US/istct-hyatt-centric-levent-istanbul",
+      "wikidata_id": "Q12846559",
+      "sources": [
+        {
+          "type": "wikidata",
+          "url": "https://www.wikidata.org/wiki/Q12846559",
+          "checked_at": "2026-10-06T10:53:01+00:00"
+        },
+        {
+          "type": "official",
+          "url": "https://www.hyatt.com/hyatt-centric/en-US/istct-hyatt-centric-levent-istanbul",
+          "checked_at": "2026-10-06T10:53:14+00:00"
+        }
+      ],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000003",
+      "id": "oh-curated-000003",
+      "name": "Park Hyatt Istanbul - Macka Palas",
+      "canonical_name": "Park Hyatt Istanbul - Macka Palas",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.047318,
+      "lon": 28.993864,
+      "latitude": 41.047318,
+      "longitude": 28.993864,
+      "zone_key": "istanbul",
+      "official_website": "https://www.hyatt.com/park-hyatt/en-US/istph-park-hyatt-istanbul-macka-palas",
+      "wikidata_id": "Q111400322",
+      "sources": [
+        {
+          "type": "wikidata",
+          "url": "https://www.wikidata.org/wiki/Q111400322",
+          "checked_at": "2026-10-06T10:53:04+00:00"
+        },
+        {
+          "type": "official",
+          "url": "https://www.hyatt.com/park-hyatt/en-US/istph-park-hyatt-istanbul-macka-palas",
+          "checked_at": "2026-10-06T10:53:14+00:00"
+        }
+      ],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000004",
+      "id": "oh-curated-000004",
+      "name": "Best Western Amber Hotel",
+      "canonical_name": "Best Western Amber Hotel",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.0048,
+      "lon": 28.96529,
+      "latitude": 41.0048,
+      "longitude": 28.96529,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000005",
+      "id": "oh-curated-000005",
+      "name": "Best Western Citadel Hotel",
+      "canonical_name": "Best Western Citadel Hotel",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.0036,
+      "lon": 28.98152,
+      "latitude": 41.0036,
+      "longitude": 28.98152,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000007",
+      "id": "oh-curated-000007",
+      "name": "Best Western Premier Acropol Suites & Spa",
+      "canonical_name": "Best Western Premier Acropol Suites & Spa",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.00578,
+      "lon": 28.98056,
+      "latitude": 41.00578,
+      "longitude": 28.98056,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000008",
+      "id": "oh-curated-000008",
+      "name": "Best Western Premier Regency Suites Hotel-spa",
+      "canonical_name": "Best Western Premier Regency Suites Hotel-spa",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.00554,
+      "lon": 28.98024,
+      "latitude": 41.00554,
+      "longitude": 28.98024,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000009",
+      "id": "oh-curated-000009",
+      "name": "Best Western Premier Senator Hotel",
+      "canonical_name": "Best Western Premier Senator Hotel",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.01192,
+      "lon": 28.95502,
+      "latitude": 41.01192,
+      "longitude": 28.95502,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000010",
+      "id": "oh-curated-000010",
+      "name": "Conrad Istanbul Bosphorus",
+      "canonical_name": "Conrad Istanbul Bosphorus",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.04694,
+      "lon": 29.00893,
+      "latitude": 41.04694,
+      "longitude": 29.00893,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000012",
+      "id": "oh-curated-000012",
+      "name": "Crowne Plaza Istanbul - Harbiye",
+      "canonical_name": "Crowne Plaza Istanbul - Harbiye",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.04872,
+      "lon": 28.98538,
+      "latitude": 41.04872,
+      "longitude": 28.98538,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000015",
+      "id": "oh-curated-000015",
+      "name": "Doubletree by Hilton Istanbul Moda",
+      "canonical_name": "Doubletree by Hilton Istanbul Moda",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 40.98818,
+      "lon": 29.02095,
+      "latitude": 40.98818,
+      "longitude": 29.02095,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000016",
+      "id": "oh-curated-000016",
+      "name": "Four Seasons Hotel Istanbul at the Bosphorus",
+      "canonical_name": "Four Seasons Hotel Istanbul at the Bosphorus",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.04289,
+      "lon": 29.01168,
+      "latitude": 41.04289,
+      "longitude": 29.01168,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000017",
+      "id": "oh-curated-000017",
+      "name": "Grand Hyatt Istanbul",
+      "canonical_name": "Grand Hyatt Istanbul",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.04101,
+      "lon": 28.98902,
+      "latitude": 41.04101,
+      "longitude": 28.98902,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000020",
+      "id": "oh-curated-000020",
+      "name": "Hilton Garden Inn Istanbul Golden Horn",
+      "canonical_name": "Hilton Garden Inn Istanbul Golden Horn",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.05382,
+      "lon": 28.94929,
+      "latitude": 41.05382,
+      "longitude": 28.94929,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000021",
+      "id": "oh-curated-000021",
+      "name": "Hilton Istanbul Bomonti Hotel & Conference Center",
+      "canonical_name": "Hilton Istanbul Bomonti Hotel & Conference Center",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.05816,
+      "lon": 28.97922,
+      "latitude": 41.05816,
+      "longitude": 28.97922,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000022",
+      "id": "oh-curated-000022",
+      "name": "Hilton Istanbul Bosphorus",
+      "canonical_name": "Hilton Istanbul Bosphorus",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.04448,
+      "lon": 28.98894,
+      "latitude": 41.04448,
+      "longitude": 28.98894,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000023",
+      "id": "oh-curated-000023",
+      "name": "Holiday Inn Istanbul City",
+      "canonical_name": "Holiday Inn Istanbul City",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.01843,
+      "lon": 28.92649,
+      "latitude": 41.01843,
+      "longitude": 28.92649,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000024",
+      "id": "oh-curated-000024",
+      "name": "InterContinental Istanbul",
+      "canonical_name": "InterContinental Istanbul",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.04028,
+      "lon": 28.98821,
+      "latitude": 41.04028,
+      "longitude": 28.98821,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000025",
+      "id": "oh-curated-000025",
+      "name": "Istanbul Marriott Hotel Asia",
+      "canonical_name": "Istanbul Marriott Hotel Asia",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 40.98058,
+      "lon": 29.1014,
+      "latitude": 40.98058,
+      "longitude": 29.1014,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000026",
+      "id": "oh-curated-000026",
+      "name": "Istanbul Marriott Hotel Sisli",
+      "canonical_name": "Istanbul Marriott Hotel Sisli",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.06411,
+      "lon": 28.98753,
+      "latitude": 41.06411,
+      "longitude": 28.98753,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000028",
+      "id": "oh-curated-000028",
+      "name": "Mercure Istanbul Altunizade",
+      "canonical_name": "Mercure Istanbul Altunizade",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.02458,
+      "lon": 29.04125,
+      "latitude": 41.02458,
+      "longitude": 29.04125,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000036",
+      "id": "oh-curated-000036",
+      "name": "Abella Hotel - Special Class",
+      "canonical_name": "Abella Hotel - Special Class",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.00368,
+      "lon": 28.97533,
+      "latitude": 41.00368,
+      "longitude": 28.97533,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000037",
+      "id": "oh-curated-000037",
+      "name": "Ada Hotel",
+      "canonical_name": "Ada Hotel",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.00498,
+      "lon": 28.97276,
+      "latitude": 41.00498,
+      "longitude": 28.97276,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000038",
+      "id": "oh-curated-000038",
+      "name": "Adahan Istanbul",
+      "canonical_name": "Adahan Istanbul",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.02917,
+      "lon": 28.97301,
+      "latitude": 41.02917,
+      "longitude": 28.97301,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000039",
+      "id": "oh-curated-000039",
+      "name": "Adamar Hotel - Special Class",
+      "canonical_name": "Adamar Hotel - Special Class",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.00974,
+      "lon": 28.97648,
+      "latitude": 41.00974,
+      "longitude": 28.97648,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    },
+    {
+      "hotel_id": "oh-curated-000040",
+      "id": "oh-curated-000040",
+      "name": "Adora Hotel",
+      "canonical_name": "Adora Hotel",
+      "city": "Istanbul",
+      "country_code": "TR",
+      "lat": 41.01363,
+      "lon": 28.9766,
+      "latitude": 41.01363,
+      "longitude": 28.9766,
+      "zone_key": "istanbul",
+      "official_website": null,
+      "wikidata_id": null,
+      "sources": [],
+      "region": "istanbul",
+      "provenance": {
+        "note": "Basic identity facts; photographs and Hotels-50K records are excluded."
+      }
+    }
+  ]
+}

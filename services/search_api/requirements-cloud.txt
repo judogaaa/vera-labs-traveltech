@@ -1,0 +1,5 @@
+-r requirements.txt
+torch
+torchvision
+transformers>=4.40
+# The separately provisioned indexer package and licensed weights are required.

@@ -1,0 +1,1 @@
+"""Cloud visual search API."""
