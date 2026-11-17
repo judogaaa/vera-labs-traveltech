@@ -110,3 +110,5 @@ __pycache__/
 .e2e-fixtures.json
 playwright-report/
 test-results/
+
+data/trip_photos_cache.json
