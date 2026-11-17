@@ -49,6 +49,9 @@ data/curated_hotels/cache/h50k_images.json
 
 # Trip planner persisted itineraries + local smoke reports
 data/trips/
+data/trip_sessions.json
+data/trip_session_secret
+data/trip_session_secret.tmp
 scripts/_write_gigachat_env.py
 scripts/_diag_gigachat_tls.py
 

@@ -18,9 +18,25 @@ function streamResponse(chunks: string[]): Response {
   )
 }
 
+function withSession(handler: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>) {
+  return vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+    if (String(input).includes('/api/trips/session')) {
+      return new Response(JSON.stringify({ csrf: 'test-csrf', expiresAt: 0, trips: 0 }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+    return handler(input, init)
+  })
+}
+
+function tripCalls(mock: { mock: { calls: unknown[][] } }) {
+  return mock.mock.calls.filter((call) => !String(call[0]).includes('/api/trips/session'))
+}
+
 describe('trip planner streaming', () => {
   it('propagates provider errors without issuing a second plan POST', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
+    const fetchMock = withSession(async () =>
       streamResponse(['data: {"type":"error","code":"places_unavailable","message":"Overpass failed"}\n\n']),
     )
     vi.stubGlobal('fetch', fetchMock)
@@ -29,7 +45,7 @@ describe('trip planner streaming', () => {
       code: 'places_unavailable',
       message: 'Overpass failed',
     })
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(tripCalls(fetchMock)).toHaveLength(1)
   })
 
   it('parses progress and success events even when split across network chunks', async () => {
@@ -37,46 +53,59 @@ describe('trip planner streaming', () => {
     const stream =
       'data: {"type":"progress","step":"Ищу места"}\n\n' +
       `data: ${JSON.stringify({ type: 'done', trip })}\n\n`
-    const fetchMock = vi.fn().mockResolvedValue(streamResponse([stream.slice(0, 18), stream.slice(18)]))
+    const fetchMock = withSession(async () =>
+      streamResponse([stream.slice(0, 18), stream.slice(18)]),
+    )
     vi.stubGlobal('fetch', fetchMock)
     const progress = vi.fn()
 
     const result = await planTripWithProgress('test trip', null, progress)
     expect(result.id).toBe('trip_test')
     expect(progress).toHaveBeenCalledWith('Ищу места')
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(tripCalls(fetchMock)).toHaveLength(1)
   })
 
   it('does not retry when SSE ends without a done event', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(streamResponse(['data: {"type":"progress","step":"Ищу места"}\n\n']))
+    const fetchMock = withSession(async () =>
+      streamResponse(['data: {"type":"progress","step":"Ищу места"}\n\n']),
+    )
     vi.stubGlobal('fetch', fetchMock)
 
     await expect(planTripWithProgress('test trip', null, vi.fn())).rejects.toMatchObject({
       code: 'stream_interrupted',
     })
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(tripCalls(fetchMock)).toHaveLength(1)
   })
 
   it('uses the non-streaming endpoint only when the stream endpoint is unavailable', async () => {
     const trip = { id: 'trip_fallback', days: [], summary: 'ok' }
-    const fetchMock = vi.fn()
-      .mockResolvedValueOnce(new Response(null, { status: 404 }))
-      .mockResolvedValueOnce(new Response(JSON.stringify({ trip }), { status: 200 }))
+    let planCalls = 0
+    const fetchMock = withSession(async () => {
+      planCalls += 1
+      return planCalls === 1
+        ? new Response(null, { status: 404 })
+        : new Response(JSON.stringify({ trip }), { status: 200 })
+    })
     vi.stubGlobal('fetch', fetchMock)
 
     const result = await planTripWithProgress('test trip', null, vi.fn())
     expect(result.id).toBe('trip_fallback')
-    expect(fetchMock).toHaveBeenCalledTimes(2)
-    expect(String(fetchMock.mock.calls[1][0])).toContain('/api/trips/plan')
+    expect(tripCalls(fetchMock)).toHaveLength(2)
+    expect(String(tripCalls(fetchMock)[1][0])).toContain('/api/trips/plan')
   })
 
   it('surfaces a backend connectivity error without retrying', async () => {
-    const fetchMock = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'))
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input).includes('/api/trips/session')) {
+        return new Response(JSON.stringify({ csrf: 'test-csrf' }), { status: 200 })
+      }
+      throw new TypeError('Failed to fetch')
+    })
     vi.stubGlobal('fetch', fetchMock)
 
     await expect(planTripWithProgress('test trip', null, vi.fn())).rejects.toMatchObject({
       code: 'network_unavailable',
     })
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(tripCalls(fetchMock)).toHaveLength(1)
   })
 })

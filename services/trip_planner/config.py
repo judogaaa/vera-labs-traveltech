@@ -32,6 +32,26 @@ GIGACHAT_ENABLED = _gc.GIGACHAT_ENABLED
 TRIP_STORE_DIR = Path(os.getenv("TRIP_STORE_DIR", str(_ROOT / "data" / "trips")))
 TRIP_STORE_DIR.mkdir(parents=True, exist_ok=True)
 
+# Trip ownership: every trip belongs to the browser session that created it.
+# The secret signs the HttpOnly session cookie; never expose it to the frontend.
+TRIP_SESSION_FILE = Path(
+    os.getenv("TRIP_SESSION_FILE", str(_ROOT / "data" / "trip_sessions.json"))
+)
+TRIP_SESSION_SECRET_FILE = Path(
+    os.getenv("TRIP_SESSION_SECRET_FILE", str(_ROOT / "data" / "trip_session_secret"))
+)
+TRIP_SESSION_TTL_SECONDS = max(300, int(os.getenv("TRIP_SESSION_TTL_SECONDS", str(12 * 3600))))
+TRIP_COOKIE_SECURE = os.getenv("TRIP_COOKIE_SECURE", "0").strip().lower() in {"1", "true", "yes"}
+
+# Abuse limits for the unauthenticated public demo.
+TRIP_MAX_MESSAGE_CHARS = max(200, int(os.getenv("TRIP_MAX_MESSAGE_CHARS", "2000")))
+TRIP_PLAN_PER_10MIN = max(1, int(os.getenv("TRIP_PLAN_PER_10MIN", "6")))
+TRIP_CHAT_PER_10MIN = max(1, int(os.getenv("TRIP_CHAT_PER_10MIN", "40")))
+TRIP_PDF_PER_10MIN = max(1, int(os.getenv("TRIP_PDF_PER_10MIN", "12")))
+TRIP_GEO_PER_MINUTE = max(1, int(os.getenv("TRIP_GEO_PER_MINUTE", "60")))
+TRIP_MAX_CONCURRENT_PLANS = max(1, int(os.getenv("TRIP_MAX_CONCURRENT_PLANS", "3")))
+TRIP_MAX_CONCURRENT_PDFS = max(1, int(os.getenv("TRIP_MAX_CONCURRENT_PDFS", "2")))
+
 PLACES_PROVIDER = os.getenv("TRIP_PLACES_PROVIDER", "overpass").strip().lower()
 ROUTING_PROVIDER = os.getenv("TRIP_ROUTING_PROVIDER", "osrm").strip().lower()
 GEOCODING_PROVIDER = os.getenv("TRIP_GEOCODING_PROVIDER", "nominatim").strip().lower()

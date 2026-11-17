@@ -8,6 +8,53 @@ export type TripApiError = {
   message: string
 }
 
+const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS'])
+let csrfPromise: Promise<string> | null = null
+
+function readCsrf(data: unknown): string {
+  if (data && typeof data === 'object' && typeof (data as { csrf?: unknown }).csrf === 'string') {
+    return (data as { csrf: string }).csrf
+  }
+  throw { code: 'session_unavailable', message: 'Не удалось открыть сессию маршрутов' } satisfies TripApiError
+}
+
+async function csrfToken(): Promise<string> {
+  if (!csrfPromise) {
+    csrfPromise = fetch(`${API_BASE}/api/trips/session`, {
+      credentials: 'include',
+      signal: AbortSignal.timeout(8000),
+    })
+      .then(async (res) => {
+        if (!res.ok) throw { code: 'session_unavailable', message: 'Не удалось открыть сессию маршрутов' } satisfies TripApiError
+        return readCsrf(await res.json().catch(() => null))
+      })
+      .catch((err) => {
+        csrfPromise = null
+        throw err
+      })
+  }
+  return csrfPromise
+}
+
+async function apiFetch(url: string, init: RequestInit, allowRetry = true): Promise<Response> {
+  const method = (init.method || 'GET').toUpperCase()
+  const headers = new Headers(init.headers)
+  if (!SAFE_METHODS.has(method)) {
+    headers.set('X-CSRF-Token', await csrfToken())
+  }
+  const res = await fetch(url, { ...init, headers, credentials: 'include' })
+  if (res.status === 403 && allowRetry && !SAFE_METHODS.has(method)) {
+    const payload = await res.clone().json().catch(() => null)
+    const detail = (payload as { detail?: { code?: string } } | null)?.detail
+    if (detail?.code === 'csrf_failed') {
+      // The cookie session rotated or expired: fetch a fresh token once.
+      csrfPromise = null
+      return apiFetch(url, init, false)
+    }
+  }
+  return res
+}
+
 function parseError(data: unknown, fallback: string): TripApiError {
   if (data && typeof data === 'object') {
     const d = data as { detail?: { code?: string; message?: string } | string; code?: string; message?: string }
@@ -23,7 +70,7 @@ function parseError(data: unknown, fallback: string): TripApiError {
 export async function fetchTripStatus(): Promise<Record<string, unknown>> {
   let res: Response
   try {
-    res = await fetch(`${API_BASE}/api/trips/status`, { signal: AbortSignal.timeout(8000) })
+    res = await apiFetch(`${API_BASE}/api/trips/status`, { signal: AbortSignal.timeout(8000) })
   } catch {
     throw {
       code: 'network_unavailable',
@@ -37,7 +84,7 @@ export async function fetchTripStatus(): Promise<Record<string, unknown>> {
 export async function planTrip(message: string, hotel?: HotelTripContext | null, tripId?: string | null): Promise<PlannedTrip> {
   let res: Response
   try {
-    res = await fetch(`${API_BASE}/api/trips/plan`, {
+    res = await apiFetch(`${API_BASE}/api/trips/plan`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message, hotel: hotel ?? null, tripId: tripId ?? null }),
@@ -57,7 +104,7 @@ export async function planTrip(message: string, hotel?: HotelTripContext | null,
 export async function chatTrip(tripId: string, message: string): Promise<PlannedTrip> {
   let res: Response
   try {
-    res = await fetch(`${API_BASE}/api/trips/${tripId}/chat`, {
+    res = await apiFetch(`${API_BASE}/api/trips/${tripId}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message }),
@@ -77,7 +124,7 @@ export async function chatTrip(tripId: string, message: string): Promise<Planned
 export async function getTrip(tripId: string): Promise<PlannedTrip> {
   let res: Response
   try {
-    res = await fetch(`${API_BASE}/api/trips/${tripId}`, { signal: AbortSignal.timeout(15000) })
+    res = await apiFetch(`${API_BASE}/api/trips/${tripId}`, { signal: AbortSignal.timeout(15000) })
   } catch {
     throw {
       code: 'network_unavailable',
@@ -104,7 +151,7 @@ export async function planTripWithProgress(
   let res: Response
 
   try {
-    res = await fetch(`${API_BASE}/api/trips/plan/stream`, {
+    res = await apiFetch(`${API_BASE}/api/trips/plan/stream`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
       body,

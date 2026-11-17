@@ -142,8 +142,11 @@ def ready() -> dict:
         },
         "degraded": degraded,
         "security": {
-            "auth": "none",
-            "note": "Trip endpoints are unauthenticated; tripId acts as a capability URL.",
+            "auth": "signed-http-only-session",
+            "note": (
+                "Trip endpoints require a signed HttpOnly session cookie; "
+                "each trip is readable only by the session that created it."
+            ),
         },
     }
     if not ready_ok:

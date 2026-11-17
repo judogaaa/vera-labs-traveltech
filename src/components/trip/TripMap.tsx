@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import maplibregl from 'maplibre-gl'
+import * as maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { DayPlan, HotelTripContext, PlannedTrip, TripStop } from '../../types/trip'
 import { tripVerifiedSegmentLines } from '../../lib/tripRouteLine'
