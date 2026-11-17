@@ -1,0 +1,23 @@
+name: Independent source review snapshot
+on:
+  push:
+    branches:
+      - audit/independent-review-20261117
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Archive reviewed commit only (without Git history)
+        run: git archive --format=zip --output=/tmp/audit-source.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: independent-audit-source
+          path: /tmp/audit-source.zip
+          retention-days: 1
