@@ -1,4 +1,4 @@
-fastapi>=0.115,<1
+fastapi>=0.163.0,<1
 uvicorn[standard]>=0.32,<1
 python-dotenv>=1,<2
 qdrant-client>=1.9,<2
