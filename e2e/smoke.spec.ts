@@ -34,6 +34,9 @@ test.describe('smoke', () => {
     await page.locator('#hotel-intelligence-query').fill('Нужен тихий номер с плотными шторами')
     await expect(page.getByRole('button', { name: 'Найти', exact: true })).toBeEnabled()
     await expect(page.getByRole('link', { name: /Сравнить/i })).toBeVisible()
+    if (process.env.E2E_REQUIRE_API === '1') {
+      await expect(page.getByText('Hyatt Centric Levent Istanbul', { exact: false }).first()).toBeVisible()
+    }
     await shot(page, 'hotel-intelligence-desktop')
     await page.setViewportSize({ width: 390, height: 844 })
     await shot(page, 'hotel-intelligence-mobile')
