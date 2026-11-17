@@ -84,7 +84,7 @@ test('5. /oh-route loads', async ({ page }) => {
   await assertNoCriticalBrowserErrors(c)
 })
 
-test('6–9. Kazan trip + map/trip toggle + edit + PDF', async ({ page, request }) => {
+test('6–9. Kazan trip + map/trip toggle + edit + PDF', async ({ page }) => {
   test.setTimeout(360_000)
   const c = attachCollectors(page)
   await go(page, '/oh-route')
@@ -111,7 +111,7 @@ test('6–9. Kazan trip + map/trip toggle + edit + PDF', async ({ page, request 
   await expect(pdfLink).toBeVisible({ timeout: 15_000 })
   const href = await pdfLink.getAttribute('href')
   expect(href).toBeTruthy()
-  const res = await request.get(href!)
+  const res = await page.request.get(href!)
   expect(res.status()).toBe(200)
   expect(res.headers()['content-type'] || '').toMatch(/pdf/i)
   const buf = await res.body()
@@ -180,7 +180,7 @@ test('Responsive viewports smoke', async ({ page }) => {
   }
 })
 
-test('Istanbul: 6 wishes, morning start, map, replace bar', async ({ page, request }) => {
+test('Istanbul: 6 wishes, morning start, map, replace bar', async ({ page }) => {
   test.setTimeout(420_000)
   const c = attachCollectors(page)
   const api = process.env.E2E_API_URL || 'http://127.0.0.1:8000'
@@ -218,7 +218,7 @@ test('Istanbul: 6 wishes, morning start, map, replace bar', async ({ page, reque
   expect(href).toBeTruthy()
   const tripId = href!.match(/\/api\/trips\/([^/]+)\/pdf/)?.[1]
   expect(tripId).toBeTruthy()
-  const tripRes = await request.get(`${api}/api/trips/${tripId}`)
+  const tripRes = await page.request.get(`${api}/api/trips/${tripId}`)
   expect(tripRes.status()).toBe(200)
   const trip = (await tripRes.json()).trip
   expect(trip.intent.startTime).toBe('10:00')
@@ -245,12 +245,12 @@ test('Istanbul: 6 wishes, morning start, map, replace bar', async ({ page, reque
   expect(after).toMatch(/Заменил|винн|бар/i)
   await shot(page, '22-istanbul-replace-bar')
 
-  const tripAfterReplace = (await (await request.get(`${api}/api/trips/${tripId}`)).json()).trip
+  const tripAfterReplace = (await (await page.request.get(`${api}/api/trips/${tripId}`)).json()).trip
   const stopsBefore = tripAfterReplace.days[0].stops.length as number
   const idsBefore = tripAfterReplace.days[0].stops.map((s: { placeId: string }) => s.placeId)
   await sendTripMessage(page, 'Оставь маршрут без изменений')
   await waitForTripReady(page, 120_000)
-  const trip2 = (await (await request.get(`${api}/api/trips/${tripId}`)).json()).trip
+  const trip2 = (await (await page.request.get(`${api}/api/trips/${tripId}`)).json()).trip
   expect(trip2.days[0].stops.length).toBe(stopsBefore)
   expect(trip2.days[0].stops.map((s: { placeId: string }) => s.placeId)).toEqual(idsBefore)
   await assertNoCriticalBrowserErrors(c)

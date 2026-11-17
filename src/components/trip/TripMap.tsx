@@ -1,8 +1,13 @@
 import { useEffect, useRef } from 'react'
-import maplibregl from 'maplibre-gl'
+import * as maplibregl from 'maplibre-gl'
+import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { DayPlan, HotelTripContext, PlannedTrip, TripStop } from '../../types/trip'
 import { tripVerifiedSegmentLines } from '../../lib/tripRouteLine'
+
+// MapLibre 6 resolves its worker relative to import.meta.url, which points at
+// this bundled chunk. Emit the worker explicitly so Vite serves a real file.
+maplibregl.setWorkerUrl(maplibreWorkerUrl)
 
 type Props = {
   trip: PlannedTrip | null

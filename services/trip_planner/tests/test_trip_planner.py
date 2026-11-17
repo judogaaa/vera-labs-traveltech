@@ -49,11 +49,27 @@ def agent(tmp_path: Path) -> TripPlannerAgent:
 
 
 @pytest.fixture()
-def client(agent: TripPlannerAgent) -> TestClient:
+def client(agent: TripPlannerAgent, tmp_path: Path) -> TestClient:
+    from services.trip_planner.api import set_session_store
+    from services.trip_planner.session import SessionStore
+
     app = FastAPI()
     app.include_router(router)
     set_agent(agent)
+    set_session_store(SessionStore(tmp_path / "sessions.json"))
     return TestClient(app)
+
+
+def _csrf(client: TestClient) -> str:
+    return client.get("/api/trips/session").json()["csrf"]
+
+
+def _owner_sid(client: TestClient) -> str:
+    from services.trip_planner.session import COOKIE_NAME, decode_cookie
+
+    sid = decode_cookie(client.cookies.get(COOKIE_NAME))
+    assert sid
+    return sid
 
 
 def test_kazan_one_day_main_sights(agent: TripPlannerAgent) -> None:
@@ -169,6 +185,9 @@ def test_pdf_endpoint(client: TestClient, agent: TripPlannerAgent) -> None:
     from services.trip_planner.store import TripStore
 
     agent.store.save(trip)
+    # The trip belongs to the browser session that owns it.
+    _csrf(client)
+    agent.store.set_owner(trip.id, _owner_sid(client))
     resp = client.get(f"/api/trips/{trip.id}/pdf")
     assert resp.status_code == 200
     assert resp.headers["content-type"].startswith("application/pdf")

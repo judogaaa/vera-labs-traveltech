@@ -2,10 +2,18 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from . import config
 
 
 TransportMode = Literal["walk", "car", "transit", "mixed"]
+
+# Trip ids are always server-generated: "trip_" + 32 lowercase hex chars.
+TRIP_ID_PATTERN = r"^trip_[0-9a-f]{32}$"
+MAX_DAYS = 7
+MAX_STOPS_PER_DAY = 30
+MAX_STOPS_TOTAL = 120
 Pace = Literal["relaxed", "normal", "intensive"]
 
 
@@ -163,32 +171,57 @@ class ChatMessage(BaseModel):
 
 
 class PlanRequest(BaseModel):
-    message: str
+    message: str = Field(min_length=1, max_length=config.TRIP_MAX_MESSAGE_CHARS)
     hotel: HotelContext | None = None
     travelers: Travelers | None = None
-    tripId: str | None = None
+    # Only an id of a trip already owned by this session may be sent;
+    # the API rejects anything else instead of overwriting a foreign route.
+    tripId: str | None = Field(default=None, max_length=64)
 
 
 class ChatRequest(BaseModel):
-    message: str
+    message: str = Field(min_length=1, max_length=1000)
 
 
 class RebuildDayRequest(BaseModel):
-    dayNumber: int
-    message: str | None = None
+    dayNumber: int = Field(ge=1, le=MAX_DAYS)
+    message: str | None = Field(default=None, max_length=1000)
+
+
+class TripPatch(BaseModel):
+    """Strict PATCH payload: bounded depth and size, unknown keys ignored."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    summary: str | None = Field(default=None, max_length=4000)
+    hotel: HotelContext | None = None
+    intent: TripIntent | None = None
+    days: list[DayPlan] | None = Field(default=None, max_length=MAX_DAYS)
+
+    @field_validator("days")
+    @classmethod
+    def _bounded_days(cls, value: list[DayPlan] | None) -> list[DayPlan] | None:
+        if value is None:
+            return value
+        if sum(len(day.stops) for day in value) > MAX_STOPS_TOTAL:
+            raise ValueError("too many stops")
+        for day in value:
+            if len(day.stops) > MAX_STOPS_PER_DAY:
+                raise ValueError("too many stops in a day")
+        return value
 
 
 class PlacesSearchRequest(BaseModel):
-    query: str
-    nearLat: float
-    nearLon: float
-    radiusMeters: int = 5000
-    category: str | None = None
+    query: str = Field(min_length=1, max_length=200)
+    nearLat: float = Field(ge=-90, le=90)
+    nearLon: float = Field(ge=-180, le=180)
+    radiusMeters: int = Field(default=5000, ge=50, le=25_000)
+    category: str | None = Field(default=None, max_length=40)
 
 
 class RouteCalculateRequest(BaseModel):
-    originLat: float
-    originLon: float
-    destLat: float
-    destLon: float
+    originLat: float = Field(ge=-90, le=90)
+    originLon: float = Field(ge=-180, le=180)
+    destLat: float = Field(ge=-90, le=90)
+    destLon: float = Field(ge=-180, le=180)
     mode: Literal["walk", "car", "transit"] = "walk"
