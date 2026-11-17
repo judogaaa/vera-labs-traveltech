@@ -116,18 +116,50 @@ def _http_get_json(url: str, timeout: float | None = None) -> dict | None:
         return None
 
 
+def _trusted_image_url(url: str) -> bool:
+    """Only fetch verified Wikimedia image hosts, never arbitrary OSM/image URLs.
+
+    Downloading unchecked user-supplied HTTPS links could reach internal services
+    (including via a redirect) when the trip PDF is rendered by the API.
+    Other external image refs may still be shown in the browser as links.
+    """
+    try:
+        parts = urllib.parse.urlsplit(url)
+        host = (parts.hostname or "").lower().rstrip(".")
+        return (
+            parts.scheme == "https"
+            and bool(host)
+            and parts.username is None
+            and parts.password is None
+            and parts.port in (None, 443)
+            and (host == "wikimedia.org" or host.endswith(".wikimedia.org")
+                 or host == "wikipedia.org" or host.endswith(".wikipedia.org"))
+        )
+    except ValueError:
+        return False
+
+
+class _SafeImageRedirect(urllib.request.HTTPRedirectHandler):
+    """Deny redirect chains from trusted Wikimedia hosts to other networks."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: ANN001, ANN201
+        if not _trusted_image_url(newurl):
+            return None
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
 def fetch_image_bytes(url: str, *, timeout: float | None = None, max_bytes: int = MAX_IMAGE_BYTES) -> bytes | None:
     """Safe HTTPS image download with size cap and budget-aware timeout."""
-    if not url or not str(url).startswith("https://"):
+    if not url or not _trusted_image_url(str(url)):
         return None
-    host = urllib.parse.urlparse(url).netloc.lower()
-    # Allow Wikimedia always; other https hosts only when explicitly from OSM image=*
+    host = urllib.parse.urlsplit(url).hostname or ""
+    # Strict host allowlist also applies to redirects, not only the initial URL.
     t = min(timeout if timeout is not None else 5.0, _remaining_budget())
     if t <= 0.05:
         return None
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "image/*,*/*"})
     try:
-        with urllib.request.urlopen(req, timeout=t) as resp:
+        with urllib.request.build_opener(_SafeImageRedirect()).open(req, timeout=t) as resp:
             ctype = (resp.headers.get("Content-Type") or "").lower()
             if ctype and not any(x in ctype for x in ("image/", "octet-stream", "binary")):
                 # Still allow if Commons redirects oddly
