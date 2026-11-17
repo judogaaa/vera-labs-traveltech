@@ -92,12 +92,13 @@ def _catalog_status() -> dict:
         return {
             "ok": True,
             "hotels": len(db.get("hotels") or []),
-            "path": str(_hotel_resolver.db_path),
+            "catalog": "configured",
         }
-    except FileNotFoundError as exc:
-        return {"ok": False, "error": str(exc)}
-    except Exception as exc:  # noqa: BLE001
-        return {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
+    except FileNotFoundError:
+        return {"ok": False, "error": "catalog_missing"}
+    except Exception:  # noqa: BLE001
+        # Readiness is public. Never expose absolute paths or exception text.
+        return {"ok": False, "error": "catalog_unavailable"}
 
 
 @app.get("/health")

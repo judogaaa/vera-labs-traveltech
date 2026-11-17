@@ -9,6 +9,8 @@ from services.trip_planner.photos import (
     enrich_places,
     fetch_image_bytes,
     resolve_photo_ref,
+    _trusted_image_url,
+    _SafeImageRedirect,
 )
 
 
@@ -46,8 +48,38 @@ def test_fetch_image_bytes_timeout(monkeypatch) -> None:
     def _slow(*_a, **_k):
         raise TimeoutError("slow")
 
-    monkeypatch.setattr("urllib.request.urlopen", _slow)
-    assert fetch_image_bytes("https://example.com/x.jpg", timeout=0.2) is None
+    class _FailingOpener:
+        def open(self, *_a, **_k):
+            return _slow()
+
+    monkeypatch.setattr("urllib.request.build_opener", lambda *_a, **_k: _FailingOpener())
+    assert fetch_image_bytes("https://upload.wikimedia.org/x.jpg", timeout=0.2) is None
+
+
+def test_image_url_rejects_non_wikimedia_and_private_servers() -> None:
+    assert _trusted_image_url("https://commons.wikimedia.org/wiki/Special:FilePath/Foo.jpg")
+    assert _trusted_image_url("https://upload.wikimedia.org/example.jpg")
+    for url in (
+        "https://127.0.0.1/photo.jpg",
+        "https://169.254.169.254/latest/meta-data/",
+        "https://localhost/photo.jpg",
+        "https://commons.wikimedia.org.evil.test/p.jpg",
+        "https://bad:password@commons.wikimedia.org/p.jpg",
+        "https://upload.wikimedia.org:8443/p.jpg",
+        "http://upload.wikimedia.org/p.jpg",
+        "https://example.com/p.jpg",
+    ):
+        assert not _trusted_image_url(url)
+        assert fetch_image_bytes(url) is None
+
+
+def test_photo_redirect_cannot_leave_allowed_hosts() -> None:
+    from urllib.request import Request
+    handler = _SafeImageRedirect()
+    req = Request("https://commons.wikimedia.org/wiki/Special:FilePath/Foo.jpg")
+    assert handler.redirect_request(
+        req, None, 302, "Found", {}, "https://127.0.0.1/private"
+    ) is None
 
 
 def test_enrich_places_respects_hard_timeout() -> None:

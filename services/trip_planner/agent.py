@@ -1168,7 +1168,7 @@ class TripPlannerAgent:
         else:
             gigachat_status = "unavailable"
         trip = Trip(
-            id=trip_id or f"trip_{uuid.uuid4().hex[:12]}",
+            id=trip_id or f"trip_{uuid.uuid4().hex}",
             destination=destination,
             hotel=hotel or HotelContext(),
             days=days,
